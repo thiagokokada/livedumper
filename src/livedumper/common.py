@@ -6,6 +6,11 @@ import os
 import sys
 from distutils.util import strtobool
 
+try:
+    input = raw_input
+except NameError:
+    pass
+
 
 def yes_no_query(question):
     """Ask the user *question* for 'yes' or 'no'; ask again until user
