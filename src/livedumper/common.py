@@ -1,5 +1,7 @@
 "Common functions that may be used everywhere"
 
+from __future__ import print_function
+
 import os
 import sys
 from distutils.util import strtobool
