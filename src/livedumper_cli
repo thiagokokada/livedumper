@@ -16,22 +16,24 @@ def main():
     group.add_argument(dest='url', nargs='+', action='store', metavar='URL',
                        help='stream/video url')
     group.add_argument(dest='quality', action='store', metavar='QUALITY',
-    	               help='stream/video quality')
+                       help='stream/video quality')
     parser.add_argument('-d', '--dir', action='store', default='',
-    	                metavar='PATH', help='path to result directory')
+                        metavar='PATH', help='path to result directory')
     parser.add_argument('-v', '--version', action='version',
                         version='%(prog)s {}'.format(__version__))
 
+    # Print help when user didn't pass anything to this program
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(2)
-    
+
     # Parse the user choices
     args = parser.parse_args()
 
     dumper = LivestreamerDumper()
     for video_url in args.url:
         dumper.open(video_url, args.quality)
+        # I am assuming that all videos are using mp4 format, may be wrong
         destiny_file = os.path.join(args.dir, dumper.get_title() + '.mp4')
         dumper.dump(destiny_file)
         dumper.stop()

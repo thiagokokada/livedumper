@@ -1,3 +1,5 @@
+"Livestreamer main class"
+
 import os
 import sys
 from urllib.parse import urlsplit
@@ -6,21 +8,23 @@ from livestreamer import Livestreamer, StreamError, PluginError, NoPluginError
 
 from livedumper import common
 
-READ_BUFFER = 512 * 1024 # 512kB
+# This is just a guess, don't know if it's optimal.
+READ_BUFFER = 512 * 1024  # 512kB
 
 
-# Main class for dumping videos
 class LivestreamerDumper(object):
+    "Main class for dumping streams"
+
     def __init__(self):
         self.fd = None
 
     def open(self, url, quality):
         """Attempt to open stream from the *url*.
 
-        Returns '-1' (using sys.exit()) in case of error, including an
-        error msg.
+        Exits with '-1' (using sys.exit()) in case of error, including
+        an error msg.
         """
-        
+
         self.current_url = url
 
         try:
@@ -34,7 +38,7 @@ class LivestreamerDumper(object):
 
         if quality not in streams:
             self.exit("Unable to find '{}' stream on URL "
-                 "'{}'".format(quality, url))
+                      "'{}'".format(quality, url))
 
         try:
             self.fd = streams[quality].open()
@@ -42,10 +46,13 @@ class LivestreamerDumper(object):
             self.exit('Failed to open stream: {}'.format(err))
 
     def get_title(self):
-        "Returns the end of video url to be used as a title"
+        """Returns the end of video url to be used as a title, for
+        example: http://www.example.com/path1/path2-> path2
+        """
 
+        # http://www.example.com/path1/path2 -> /path1/path2
         path = urlsplit(self.current_url).path
-        # Get only the last part of a string
+        # /path1/path2 -> path2
         return path.split('/')[-1]
 
     def stop(self):
@@ -66,7 +73,7 @@ class LivestreamerDumper(object):
         "Attempt to dump an opened stream to path *filepath*."
 
         common.ask_overwrite(filepath)
-        
+
         filename = os.path.basename(filepath)
         file_size = 0
         with open(filepath, 'ab') as f:
@@ -76,9 +83,9 @@ class LivestreamerDumper(object):
                     if not buf:
                         break
                     f.write(buf)
-                    file_size = file_size + READ_BUFFER / 1024.0
+                    file_size = file_size + READ_BUFFER / 1024.0  # 1KB
                     sys.stdout.write('\rDownloaded {} KB of file '
-                                    '{}'.format(file_size, filename))
+                                     '{}'.format(file_size, filename))
             except KeyboardInterrupt:
                 self.exit('\nPartial download of file {}'.format(filepath))
 

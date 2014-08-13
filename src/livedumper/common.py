@@ -4,7 +4,16 @@ import os
 import sys
 from distutils.util import strtobool
 
+
 def yes_no_query(question):
+    """Ask the user *question* for 'yes' or 'no'; ask again until user
+    inputs a valid option.
+
+    Returns:
+    'True' if user answered 'y', 'yes', 't', 'true', 'on' or '1'.
+    'False' if user answered 'n', 'no', 'f', 'false', 'off' or '0'.
+    """
+
     sys.stdout.write('{} (y/n) '.format(question)),
     while True:
         try:
@@ -12,7 +21,12 @@ def yes_no_query(question):
         except ValueError:
             print("Please respond with 'y' or 'n'.")
 
+
 def ask_overwrite(dest):
+    """Check if file *dest* exists. If 'True', asks if the user wants
+    to overwrite it (just remove the file for later overwrite).
+    """
+
     msg = "File '{}' already exists. Overwrite file?".format(dest)
     if os.path.exists(dest):
         if yes_no_query(msg):
