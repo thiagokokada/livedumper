@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="livedumper",
-    version="0.1",
+    version="0.1.1",
     author="Thiago Kenji Okada",
     author_email="thiago.mast3r@gmail.com",
     description=("Livestreamer stream dumper"),
