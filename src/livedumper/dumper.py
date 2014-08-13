@@ -47,13 +47,18 @@ class LivestreamerDumper(object):
 
     def get_title(self):
         """Returns the end of video url to be used as a title, for
-        example: http://www.example.com/path1/path2-> path2
+        example: http://www.example.com/path1/path2?q=V1 -> path2_q=V1
         """
 
-        # http://www.example.com/path1/path2 -> /path1/path2
-        path = urlsplit(self.current_url).path
+        # http://www.example.com/path1/path2?q=V1 ->
+        # 'http', 'www.example.com', '/path1/path2', 'q=V1'
+        split_url = urlsplit(self.current_url)
         # /path1/path2 -> path2
-        return path.split('/')[-1]
+        filename = split_url.path.split('/')[-1]
+        # path2 -> path2_q=V1
+        if split_url.query:
+            filename = filename + '_' + split_url.query
+        return filename
 
     def stop(self):
         "Close current opened file"
