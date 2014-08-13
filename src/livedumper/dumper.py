@@ -31,19 +31,21 @@ class LivestreamerDumper(object):
             livestreamer = Livestreamer()
             streams = livestreamer.streams(url)
         except NoPluginError:
-            self.exit("Livestreamer is unable to handle the URL "
-                      "'{}'".format(url))
+            self.exit("Livestreamer is unable to handle the URL '{}'".
+                      format(url))
         except PluginError as err:
-            self.exit("Plugin error: {0}".format(err))
+            self.exit("Plugin error: {}".format(err))
 
         if quality not in streams:
-            self.exit("Unable to find '{}' stream on URL "
-                      "'{}'".format(quality, url))
+            print("Unable to find '{}' stream on URL '{}'"
+                  .format(quality, url))
+            self.exit("List of available streams: {}".
+                      format(sorted(streams.keys())))
 
         try:
             self.fd = streams[quality].open()
         except StreamError as err:
-            self.exit('Failed to open stream: {}'.format(err))
+            self.exit("Failed to open stream: {}".format(err))
 
     def get_title(self):
         """Returns the end of video url to be used as a title, for
@@ -89,9 +91,9 @@ class LivestreamerDumper(object):
                         break
                     f.write(buf)
                     file_size = file_size + READ_BUFFER / 1024.0  # 1KB
-                    print('Downloaded {} KB of file '
-                          '{}'.format(file_size, filename), end='\r')
+                    print("Downloaded {} KB of file '{}'".
+                          format(file_size, filename), end='\r')
             except KeyboardInterrupt:
-                self.exit('\nPartial download of file {}'.format(filepath))
+                self.exit("\nPartial download of file '{}'".format(filepath))
 
-        print('\nComplete download of file {}'.format(filepath))
+        print("\nComplete download of file '{}'".format(filepath))

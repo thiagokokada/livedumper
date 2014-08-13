@@ -14,7 +14,7 @@ def yes_no_query(question):
     'False' if user answered 'n', 'no', 'f', 'false', 'off' or '0'.
     """
 
-    print('{} (y/n)'.format(question), end=' '),
+    print("{} (y/n)".format(question), end=" "),
     while True:
         try:
             return strtobool(input().lower())
@@ -32,4 +32,4 @@ def ask_overwrite(dest):
         if yes_no_query(msg):
             os.remove(dest)
         else:
-            sys.exit('Cancelling operation...')
+            sys.exit("Cancelling operation...")
