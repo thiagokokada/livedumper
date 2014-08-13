@@ -14,7 +14,7 @@ def yes_no_query(question):
     'False' if user answered 'n', 'no', 'f', 'false', 'off' or '0'.
     """
 
-    sys.stdout.write('{} (y/n) '.format(question)),
+    print('{} (y/n)'.format(question), end=' '),
     while True:
         try:
             return strtobool(input().lower())

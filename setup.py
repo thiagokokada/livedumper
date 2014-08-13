@@ -1,10 +1,14 @@
 import os
+import sys
 from setuptools import setup
 
 
 def read(fname):
     filename = os.path.join(os.path.dirname(__file__), fname)
     return open(filename).read().replace('#', '')
+
+if sys.version_info < (3,2,0):
+    sys.exit("Sorry, this program is compatible with Python 3.2+ only")
 
 setup(
     name="livedumper",
@@ -26,7 +30,6 @@ setup(
         "Environment :: Console",
         "Operating System :: POSIX",
         "Operating System :: Microsoft :: Windows",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.2",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",

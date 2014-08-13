@@ -2,11 +2,7 @@
 
 import os
 import sys
-# Python 2/3 compatibility
-try:
-    from urllib.parse import urlsplit
-except ImportError:
-    from urlparse import urlsplit
+from urllib.parse import urlsplit
 
 from livestreamer import Livestreamer, StreamError, PluginError, NoPluginError
 
@@ -93,8 +89,8 @@ class LivestreamerDumper(object):
                         break
                     f.write(buf)
                     file_size = file_size + READ_BUFFER / 1024.0  # 1KB
-                    sys.stdout.write('\rDownloaded {} KB of file '
-                                     '{}'.format(file_size, filename))
+                    print('Downloaded {} KB of file '
+                          '{}'.format(file_size, filename), end='\r')
             except KeyboardInterrupt:
                 self.exit('\nPartial download of file {}'.format(filepath))
 
