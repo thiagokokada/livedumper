@@ -34,7 +34,7 @@ def main():
     for video_url in args.url:
         dumper.open(video_url, args.quality)
         # I am assuming that all videos are using mp4 format, may be wrong
-        destiny_file = os.path.join(args.dir, dumper.get_title() + '.mp4')
+        destiny_file = os.path.join(args.dir, dumper.get_title())
         dumper.dump(destiny_file)
         dumper.stop()
 

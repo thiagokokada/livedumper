@@ -18,6 +18,12 @@ from livedumper import common
 KB = 1024
 READ_BUFFER = 512 * KB  # 512kB
 
+VIDEO_EXTENSIONS = {'AkamaiHDStream': '.flv',  # http://bit.ly/1Bfa6Qc
+                    'HDSStream': '.f4f',  # http://bit.ly/1p7Ednb
+                    'HLSStream': '.ts',  # http://bit.ly/1t0oVBn
+                    'HTTPStream': '.mp4',  # Can be WebM too?
+                    'RTMPStream': '.flv'}  # http://bit.ly/1nQwWUd
+
 
 class LivestreamerDumper(object):
     "Main class for dumping streams"
@@ -32,8 +38,7 @@ class LivestreamerDumper(object):
         an error msg.
         """
 
-        self.current_url = url
-
+        self.original_url = url
         try:
             livestreamer = Livestreamer()
             streams = livestreamer.streams(url)
@@ -49,8 +54,9 @@ class LivestreamerDumper(object):
             self.exit("List of available streams: {}".
                       format(sorted(streams.keys())))
 
+        self.stream = streams[quality]
         try:
-            self.fd = streams[quality].open()
+            self.fd = self.stream.open()
         except StreamError as err:
             self.exit("Failed to open stream: {}".format(err))
 
@@ -59,15 +65,22 @@ class LivestreamerDumper(object):
         example: http://www.example.com/path1/path2?q=V1 -> path2_q=V1
         """
 
+        stream_type = self.stream.__class__.__name__
+        try:
+            extension = VIDEO_EXTENSIONS[stream_type]
+        except KeyError:
+            print('No extension found...')
+            extension = ''
+
         # http://www.example.com/path1/path2?q=V1 ->
         # 'http', 'www.example.com', '/path1/path2', 'q=V1'
-        split_url = urlsplit(self.current_url)
+        split_url = urlsplit(self.original_url)
         # /path1/path2 -> path2
         filename = split_url.path.split('/')[-1]
         # path2 -> path2_q=V1
         if split_url.query:
             filename = filename + '_' + split_url.query
-        return filename
+        return filename + extension
 
     def stop(self):
         "Close current opened file"
