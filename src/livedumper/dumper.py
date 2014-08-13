@@ -1,6 +1,6 @@
 "Livestreamer main class"
 
-from __future__ import print_function
+from __future__ import print_function, division
 
 import os
 import sys
@@ -15,7 +15,8 @@ from livestreamer import Livestreamer, StreamError, PluginError, NoPluginError
 from livedumper import common
 
 # This is just a guess, don't know if it's optimal.
-READ_BUFFER = 512 * 1024  # 512kB
+KB = 1024
+READ_BUFFER = 512 * KB  # 512kB
 
 
 class LivestreamerDumper(object):
@@ -96,7 +97,7 @@ class LivestreamerDumper(object):
                     if not buf:
                         break
                     f.write(buf)
-                    file_size = file_size + READ_BUFFER / 1024.0  # 1KB
+                    file_size = file_size + (READ_BUFFER / KB)
                     print("Downloaded {} KB of file '{}'".
                           format(file_size, filename), end='\r')
             except KeyboardInterrupt:
