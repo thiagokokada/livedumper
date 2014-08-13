@@ -50,7 +50,7 @@ class LivestreamerDumper(object):
 
         if quality not in streams:
             print("Unable to find '{}' stream on URL '{}'"
-                  .format(quality, url))
+                  .format(quality, url), file=sys.stderr)
             self.exit("List of available streams: {}".
                       format(sorted(streams.keys())))
 
@@ -69,7 +69,7 @@ class LivestreamerDumper(object):
         try:
             extension = VIDEO_EXTENSIONS[stream_type]
         except KeyError:
-            print('No extension found...')
+            print('No extension found...', file=sys.stderr)
             extension = ''
 
         # http://www.example.com/path1/path2?q=V1 ->
