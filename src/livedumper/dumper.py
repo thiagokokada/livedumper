@@ -2,7 +2,11 @@
 
 import os
 import sys
-from urllib.parse import urlsplit
+# Python 2/3 compatibility
+try:
+    from urllib.parse import urlsplit
+except ImportError:
+    from urlparse import urlsplit
 
 from livestreamer import Livestreamer, StreamError, PluginError, NoPluginError
 
