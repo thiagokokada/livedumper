@@ -12,7 +12,7 @@ if sys.version_info < (3,2,0):
 
 setup(
     name="livedumper",
-    version="0.1.1",
+    version="0.1.2",
     author="Thiago Kenji Okada",
     author_email="thiago.mast3r@gmail.com",
     description=("Livestreamer stream dumper"),
