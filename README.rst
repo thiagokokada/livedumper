@@ -47,7 +47,7 @@ If you do want to install manually, you will first need to install the Python re
 ::
 
     $ sudo pip install -r requirements.txt
-    $ git clone https://github.com/m45t3r/crdown.git
+    $ git clone https://github.com/m45t3r/livedumper.git
 
 
 **Optional but recommended**: instead of running the ``pip`` commands as root (using ``sudo``) it's better to create a isolated virtual environment so you don't mess with your system Python. To do so, do the following:
@@ -55,10 +55,10 @@ If you do want to install manually, you will first need to install the Python re
 ::
     
     $ sudo pip install virtualenv
-    $ virtualenv crdown
-    $ cd crdown
+    $ virtualenv livedumper
+    $ cd livedumper
     $ source bin/activate # You should run this command after every new terminal you open
-    $ pip install crdown
+    $ pip install livedumper
 
 
 About Python versions
