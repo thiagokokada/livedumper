@@ -9,6 +9,10 @@ try:
     from urllib.parse import urlsplit
 except ImportError:
     from urlparse import urlsplit
+try:
+    from configparser import SafeConfigParser
+except ImportError:
+    from ConfigParser import SafeConfigParser
 
 from livestreamer import Livestreamer, StreamError, PluginError, NoPluginError
 
@@ -17,6 +21,31 @@ from livedumper import common
 # This is just a guess, don't know if it's optimal.
 KB = 1024
 READ_BUFFER = 512 * KB  # 512kB
+
+# http://livestreamer.readthedocs.org/en/latest/api.html
+AVAILABLE_OPTIONS = {'hds-live-edge': 'float',
+                     'hds-segment-attempts': 'int',
+                     'hds-segment-timeout': 'float',
+                     'hds-timeout': 'float',
+                     'hls-live-edge': 'int',
+                     'hls-segment-attempts': 'int',
+                     'hls-segment-timeout': 'float',
+                     'hls-timeout': 'float',
+                     'http-proxy': 'str',
+                     'https-proxy': 'str',
+                     'http-cookies': 'str',
+                     'http-headers': 'str',
+                     'http-query-params': 'str',
+                     'http-trust-env': 'bool',
+                     'http-ssl-verify': 'bool',
+                     'http-ssl-cert': 'str',
+                     'http-timeout': 'float',
+                     'http-stream-timeout': 'float',
+                     'subprocess-errorlog': 'bool',
+                     'ringbuffer-size': 'int',
+                     'rtmp-proxy': 'str',
+                     'rtmp-rtmpdump': 'str',
+                     'rtmp-timeout': 'float'}
 
 VIDEO_EXTENSIONS = {'AkamaiHDStream': '.flv',  # http://bit.ly/1Bfa6Qc
                     'HDSStream': '.f4f',  # http://bit.ly/1p7Ednb
@@ -28,8 +57,9 @@ VIDEO_EXTENSIONS = {'AkamaiHDStream': '.flv',  # http://bit.ly/1Bfa6Qc
 class LivestreamerDumper(object):
     "Main class for dumping streams"
 
-    def __init__(self):
+    def __init__(self, config_path):
         self.fd = None
+        self.config_path = config_path
 
     def open(self, url, quality):
         """Attempt to open stream from the *url*.
@@ -40,8 +70,9 @@ class LivestreamerDumper(object):
 
         self.original_url = url
         try:
-            livestreamer = Livestreamer()
-            streams = livestreamer.streams(url)
+            self.livestreamer = Livestreamer()
+            self._config()
+            streams = self.livestreamer.streams(url)
         except NoPluginError:
             self.exit("Livestreamer is unable to handle the URL '{}'".
                       format(url))
@@ -59,6 +90,25 @@ class LivestreamerDumper(object):
             self.fd = self.stream.open()
         except StreamError as err:
             self.exit("Failed to open stream: {}".format(err))
+
+    def _config(self):
+        config = SafeConfigParser()
+        config_file = os.path.join(self.config_path, 'config')
+        config.read(config_file)
+
+        for option, type in list(AVAILABLE_OPTIONS.items()):
+            if config.has_option('DEFAULT', option):
+                if type == 'int':
+                    value = config.getint('DEFAULT', option)
+                if type == 'float':
+                    value = config.getfloat('DEFAULT', option)
+                if type == 'bool':
+                    value = config.getboolean('DEFAULT', option)
+                if type == 'str':
+                    value = config.get('DEFAULT', option)
+
+                self.livestreamer.set_option(option, value)
+
 
     def get_title(self):
         """Returns the end of video url to be used as a title, for

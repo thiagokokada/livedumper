@@ -4,8 +4,10 @@ import os
 import sys
 from argparse import ArgumentParser
 
+import appdirs
 from livedumper.dumper import LivestreamerDumper
 
+__appname__ = 'livedumper'
 __author__ = 'Thiago Kenji Okada'
 __version__ = '0.1.5'
 
@@ -30,7 +32,11 @@ def main():
     # Parse the user choices
     args = parser.parse_args()
 
-    dumper = LivestreamerDumper()
+    config_path = appdirs.user_config_dir(__appname__)
+    if not os.path.exists(config_path):
+        os.mkdir(config_path)
+    dumper = LivestreamerDumper(config_path)
+    
     for video_url in args.url:
         dumper.open(video_url, args.quality)
         destiny_file = os.path.join(args.dir, dumper.get_title())
