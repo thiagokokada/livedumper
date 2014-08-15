@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="livedumper",
-    version="0.1.5",
+    version="0.2.0",
     author="Thiago Kenji Okada",
     author_email="thiago.mast3r@gmail.com",
     description=("Livestreamer stream dumper"),
@@ -18,7 +18,7 @@ setup(
     packages=["livedumper"],
     package_dir={"": "src"},
     scripts=['src/livedumper_cli'],
-    install_requires=("livestreamer"),
+    install_requires=("appdirs", "livestreamer"),
     long_description=read('README.rst'),
     classifiers=[
         "Development Status :: 3 - Alpha",
