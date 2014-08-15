@@ -71,7 +71,7 @@ class LivestreamerDumper(object):
         self.original_url = url
         try:
             self.livestreamer = Livestreamer()
-            self._config()
+            self._load_config()
             streams = self.livestreamer.streams(url)
         except NoPluginError:
             self.exit("Livestreamer is unable to handle the URL '{}'".
@@ -91,7 +91,9 @@ class LivestreamerDumper(object):
         except StreamError as err:
             self.exit("Failed to open stream: {}".format(err))
 
-    def _config(self):
+    def _load_config(self):
+        "Load and parse config file, pass options to livestreamer"
+        
         config = SafeConfigParser()
         config_file = os.path.join(self.config_path, 'settings.ini')
         config.read(config_file)
