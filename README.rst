@@ -18,7 +18,7 @@ To run this program, you just need to call it like this:
 
 This will download a video called ``episode-1-illya-grow-up-657285.mp4`` (sorry, no custom filenames yet) with the highest quality found by livestreamer in your current folder (you can change this passing the ``-d /path/to/folder`` option). You can download multiple files (unless you want different quality settings for each video) just calling the program with multiple URLs.
 
-No options or anything like that yet. To login to some service, you can just use ``livestreamer`` command like:
+You can change livestreamer related options, see ```misc/settings.ini``` file for details. To login to some service, you can just use ``livestreamer`` command like:
 
 ::
 
