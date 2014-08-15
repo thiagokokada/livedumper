@@ -93,7 +93,7 @@ class LivestreamerDumper(object):
 
     def _config(self):
         config = SafeConfigParser()
-        config_file = os.path.join(self.config_path, 'config')
+        config_file = os.path.join(self.config_path, 'settings.ini')
         config.read(config_file)
 
         for option, type in list(AVAILABLE_OPTIONS.items()):
