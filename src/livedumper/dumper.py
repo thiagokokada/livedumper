@@ -3,6 +3,7 @@
 from __future__ import print_function, division
 
 import os
+import re
 import sys
 # Python 2/3 compatibility
 try:
@@ -14,6 +15,7 @@ try:
 except ImportError:
     from ConfigParser import SafeConfigParser
 
+import requests
 from livestreamer import Livestreamer, StreamError, PluginError, NoPluginError
 
 from livedumper import common
@@ -124,15 +126,30 @@ class LivestreamerDumper(object):
             print('No extension found...', file=sys.stderr)
             extension = ''
 
-        # http://www.example.com/path1/path2?q=V1 ->
-        # 'http', 'www.example.com', '/path1/path2', 'q=V1'
-        split_url = urlsplit(self.original_url)
-        # /path1/path2 -> path2
-        filename = split_url.path.split('/')[-1]
-        # path2 -> path2_q=V1
-        if split_url.query:
-            filename = filename + '_' + split_url.query
-        return filename + extension
+        r = requests.get(self.original_url)
+        regex = re.search(r'<title>(.+?)</title>', r.text)
+        
+        if regex is not None:
+          filename = regex.group(1)
+
+        # Badly formatted HTML (e.g. no '<title>')
+        else:
+          # 'http://www.example.com/path1/path2?q=V1' ->
+          # 'http', 'www.example.com', '/path1/path2', 'q=V1'
+          split_url = urlsplit(self.original_url)
+          # '/path1/path2' -> 'path2'
+          filename = split_url.path.split('/')[-1]
+          # 'path2' -> 'path2_q=V1'
+          if split_url.query:
+              filename = filename + '_' + split_url.query
+        
+        # http://superuser.com/a/748264 and http://stackoverflow.com/a/7406130
+        filename = re.sub(r'[/\\;:,><&\*:%=\+@!#\^\|\?\^]', '', filename)
+
+        # Since Windows (Explorer?) has a retarted limit for 255 chars for
+        # filename, including the path, we need to limit the filename to a sane
+        # size. In this case I am using 80 chars.
+        return filename[:80] + extension
 
     def stop(self):
         "Close current opened file"
