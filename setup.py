@@ -18,7 +18,7 @@ setup(
     packages=["livedumper"],
     package_dir={"": "src"},
     scripts=['src/livedumper_cli'],
-    install_requires=("appdirs", "livestreamer"),
+    install_requires=("appdirs", "livestreamer", 'requests'),
     long_description=read('README.rst'),
     classifiers=[
         "Development Status :: 3 - Alpha",
