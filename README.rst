@@ -67,7 +67,7 @@ If you do want to install manually, you will first need to install the Python re
 About Python versions
 ~~~~~~~~~~~~~~~~~~~~~
 
-This program should be compatible both with ``Python 2.7.x`` and ``Python 3.2+``, but is only tested in ``Python 3.4.x``. Should something not work, if it's in ``Python 2.7.x`` I may drop support depending if it's too hard to fix. If it's ``Python 3.2+`` I will treat it as a bug so you can report and I will try to fix it.
+This program should be compatible both with ``Python 2.7.x`` and ``Python 3.3+``, but is only tested in ``Python 3.4.x``. Should something not work, if it's in ``Python 2.7.x`` I may drop support depending if it's too hard to fix (but please report, I will at least take a look on the issue). If it's ``Python 3.3+`` I will treat it as a bug so you can report and I will try to fix it.
 
 
 Credits
