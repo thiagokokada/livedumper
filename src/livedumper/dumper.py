@@ -65,11 +65,10 @@ VIDEO_EXTENSIONS = {'AkamaiHDStream': '.flv',  # http://bit.ly/1Bfa6Qc
 # Compiling regex before using it may give a slightly better performance,
 # specially if user downloads various videos simultaneously.
 _RE_PAGE_TITLE = re.compile(r'<title>(.+?)</title>')
-# Slighty modified version from here: http://flask.pocoo.org/snippets/5/ with
-# information from here http://bit.ly/Xzf2Af.
-# I removed some characters that should be safe for a filename (the original
-# post is for URLs) and would be strange to be substituted.
-_RE_INVALID_CHARS = re.compile(r'[\t!"#$%&\'*\\/<=>?@^`{|},.]')
+# Matches any character which is not a Unicode word character.
+# I don't care if your system doesn't support unicode in filenames
+# this is f****** 2014!
+_RE_INVALID_CHARS = re.compile(r'\W', re.UNICODE)
 
 
 class LivestreamerDumper(object):
@@ -182,8 +181,7 @@ class LivestreamerDumper(object):
           if split_url.query:
               filename = filename + '_' + split_url.query
 
-        # I don't care if your system doesn't support unicode in filenames
-        # this is f****** 2014!
+        # Substitute invalid chars for '_'
         filename = _RE_INVALID_CHARS.sub('_', filename)
 
         # Since Windows (Explorer?) has a retarted limit for 255 chars for
