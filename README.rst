@@ -16,7 +16,7 @@ To run this program, you just need to call it like this:
 
     $ livedumper_cli http://www.crunchyroll.com/fatekaleid-liner-prisma-illya/episode-1-illya-grow-up-657285 best
 
-This will download a video called ``Crunchyroll - Watch Fatekaleid liner Prism☆Illya 2wei Episódio 1 - Illya Grow Up.ts`` with the highest quality found by livestreamer in your current folder (you can change this passing the ``-d /path/to/folder`` option). You can download multiple files (unless you want different quality settings for each video) just calling the program with multiple URLs.
+This will download a video called ``Crunchyroll___Watch_Fate_kaleid_liner_Prism_Illya_2wei__Episódio_1___Illya_Grow_.ts`` with the highest quality found by livestreamer in your current folder (you can change this passing the ``-d /path/to/folder`` option). You can download multiple files (unless you want different quality settings for each video) just calling the program with multiple URLs.
 
 You can change livestreamer related options, see ``misc/settings.ini`` file for details. To login to some service, you can just use ``livestreamer`` command like:
 
