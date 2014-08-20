@@ -121,8 +121,26 @@ class LivestreamerDumper(object):
 
 
     def get_title(self):
-        """Returns the end of video url to be used as a title, for
-        example: http://www.example.com/path1/path2?q=V1 -> path2_q=V1
+        """Returns the filename from URL (including extension), that
+        may be:
+
+        https://www.youtube.com/watch?v=ZEtEH-GIAJE ->
+        '[Hatsune Miku] After Rain Sweet*Drops [English Sub] -
+        YouTube.mp4'
+
+        https://www.youtube.com/watch?v=ZEtEH-GIAJE ->
+        'watch_v=ZEtEH-GIAJE.mp4'
+
+        The former case occurs when URL is a web page with <title> tags.
+        The last case will occur in pages with malformed HTML or when
+        you pass a non-HTML URL as a parameter (for example, a link to
+        a direct HTML5 video).
+
+        The extension will be detected according to the stream type,
+        for example RTMPStream will always be '.flv'. The only format
+        that may returns a wrong extension is HTTPStream, since there
+        is no standard container in this case. We assume (for now) that
+        every HTTPStream is '.mp4'.
         """
 
         stream_type = self.stream.__class__.__name__
