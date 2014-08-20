@@ -62,6 +62,15 @@ VIDEO_EXTENSIONS = {'AkamaiHDStream': '.flv',  # http://bit.ly/1Bfa6Qc
                     'HTTPStream': '.mp4',  # Can be WebM too?
                     'RTMPStream': '.flv'}  # http://bit.ly/1nQwWUd
 
+# Compiling regex before using it may give a slightly better performance,
+# specially if user downloads various videos simultaneously.
+_RE_PAGE_TITLE = re.compile(r'<title>(.+?)</title>')
+# Slighty modified version from here: http://flask.pocoo.org/snippets/5/ with
+# information from here http://bit.ly/Xzf2Af.
+# I removed some characters that should be safe for a filename (the original
+# post is for URLs) and would be strange to be substituted.
+_RE_INVALID_CHARS = re.compile(r'[\t!"#$%&\'*\\/<=>?@^`{|},.]')
+
 
 class LivestreamerDumper(object):
     "Main class for dumping streams"
@@ -157,10 +166,10 @@ class LivestreamerDumper(object):
             extension = ''
 
         r = requests.get(self.original_url)
-        regex = re.search(r'<title>(.+?)</title>', r.text)
+        regex_result = _RE_PAGE_TITLE.search(r.text)
         
-        if regex is not None:
-          filename = regex.group(1)
+        if regex_result is not None:
+          filename = regex_result.group(1)
 
         # Badly formatted HTML (e.g. no '<title>')
         else:
@@ -172,9 +181,10 @@ class LivestreamerDumper(object):
           # 'path2' -> 'path2_q=V1'
           if split_url.query:
               filename = filename + '_' + split_url.query
-        
-        # http://superuser.com/a/748264 and http://stackoverflow.com/a/7406130
-        filename = re.sub(r'[/\\;:,><&\*:%=\+@!#\^\|\?\^]', '', filename)
+
+        # I don't care if your system doesn't support unicode in filenames
+        # this is f****** 2014!
+        filename = _RE_INVALID_CHARS.sub('_', filename)
 
         # Since Windows (Explorer?) has a retarted limit for 255 chars for
         # filename, including the path, we need to limit the filename to a sane
