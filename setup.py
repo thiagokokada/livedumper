@@ -17,9 +17,9 @@ setup(
     url='https://github.com/m45t3r/livedumper',
     packages=["livedumper"],
     package_dir={"": "src"},
-    scripts=['src/livedumper_cli'],
-    install_requires=("appdirs", "livestreamer", 'requests'),
-    long_description=read('README.rst'),
+    scripts=["src/livedumper_cli/livedumper"],
+    install_requires=("appdirs", "livestreamer", "requests"),
+    long_description=read("README.rst"),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
