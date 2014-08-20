@@ -1,2 +1,2 @@
-livestreamer==1.9.0
+livestreamer==1.10.0
 requests==2.3.0

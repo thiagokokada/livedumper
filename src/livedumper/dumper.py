@@ -27,10 +27,12 @@ READ_BUFFER = 512 * KB  # 512kB
 # http://livestreamer.readthedocs.org/en/latest/api.html
 AVAILABLE_OPTIONS = {'hds-live-edge': 'float',
                      'hds-segment-attempts': 'int',
+                     'hds-segment-threads': 'int',
                      'hds-segment-timeout': 'float',
                      'hds-timeout': 'float',
                      'hls-live-edge': 'int',
                      'hls-segment-attempts': 'int',
+                     'hls-segment-threads': 'int',
                      'hls-segment-timeout': 'float',
                      'hls-timeout': 'float',
                      'http-proxy': 'str',
@@ -47,7 +49,11 @@ AVAILABLE_OPTIONS = {'hds-live-edge': 'float',
                      'ringbuffer-size': 'int',
                      'rtmp-proxy': 'str',
                      'rtmp-rtmpdump': 'str',
-                     'rtmp-timeout': 'float'}
+                     'rtmp-timeout': 'float',
+                     'stream-segment-attempts': 'int',
+                     'stream-segment-threads': 'int',
+                     'stream-segment-timeout': 'float',
+                     'stream-timeout': 'float'}
 
 VIDEO_EXTENSIONS = {'AkamaiHDStream': '.flv',  # http://bit.ly/1Bfa6Qc
                     'HDSStream': '.f4f',  # http://bit.ly/1p7Ednb
