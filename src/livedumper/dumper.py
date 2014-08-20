@@ -66,13 +66,18 @@ class LivestreamerDumper(object):
     "Main class for dumping streams"
 
     def __init__(self, config_path):
+        """LivestreamerDumper constructor
+
+        Parameters:
+        config_path: path to user config directory
+        """
         self.fd = None
         self.config_path = config_path
 
     def open(self, url, quality):
-        """Attempt to open stream from the *url*.
+        """Attempt to open stream from *url*.
 
-        Exits with '-1' (using sys.exit()) in case of error, including
+        Exits with '-1' (using self.exit()) in case of error, including
         an error msg.
         """
 
@@ -176,7 +181,7 @@ class LivestreamerDumper(object):
         return filename[:80] + extension
 
     def stop(self):
-        "Close current opened file"
+        "If stream is opened, close it"
 
         if self.fd:
             self.fd.close()
@@ -184,7 +189,7 @@ class LivestreamerDumper(object):
         self.fd = None
 
     def exit(self, msg=''):
-        "Close an opened file and call sys.exit(msg)."
+        "Close an opened stream and call sys.exit(msg)."
 
         self.stop()
         sys.exit(msg)
