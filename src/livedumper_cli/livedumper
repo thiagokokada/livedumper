@@ -37,7 +37,7 @@ def main():
 
     config_path = appdirs.user_config_dir(__appname__)
     if not os.path.exists(config_path):
-        os.mkdir(config_path)
+        os.makedirs(config_path)
     dumper = LivestreamerDumper(config_path)
     
     for video_url in args.url:
