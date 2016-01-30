@@ -197,7 +197,7 @@ class LivestreamerDumper(object):
 
         self.fd = None
 
-    def exit(self, msg=''):
+    def exit(self, msg=0):
         "Close an opened stream and call sys.exit(msg)."
 
         self.stop()
